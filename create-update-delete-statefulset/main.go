@@ -76,8 +76,9 @@ func createStatefulSet(statefulSetsClient v1.StatefulSetInterface) {
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							Name:  "book-server",
-							Image: "almasood/book-server:latest",
+							Name:            "book-server",
+							Image:           "almasood/book-server:latest",
+							ImagePullPolicy: corev1.PullIfNotPresent,
 							Ports: []corev1.ContainerPort{
 								{
 									ContainerPort: 3000,

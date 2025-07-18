@@ -36,7 +36,7 @@ func main() {
 		panic(err)
 	}
 
-	statefulSetRes := schema.GroupVersionResource{Group: "apps", Version: "v1", Resource: "statefulSets"}
+	statefulSetRes := schema.GroupVersionResource{Group: "apps", Version: "v1", Resource: "statefulsets"}
 
 	fmt.Println("For Creating Deployment")
 	prompt()
@@ -76,14 +76,21 @@ func createStatefulSet(statefulSetRes schema.GroupVersionResource, client dynami
 					"spec": map[string]interface{}{
 						"containers": []interface{}{
 							map[string]interface{}{
-								"name":  "book-server",
-								"image": "almasood/book_server",
+								"name":            "book-server",
+								"image":           "almasood/book-server:latest",
+								"imagePullPolicy": "IfNotPresent",
 								"ports": []interface{}{
 									map[string]interface{}{
 										"name":          "http",
 										"protocol":      "TCP",
 										"containerPort": int64(80),
 									},
+								},
+								"args": []interface{}{
+									"serve",
+									"--port=3000",
+									"--secret=secret",
+									"--auth=true",
 								},
 							},
 						},
@@ -116,8 +123,9 @@ func updateStatefulSet(statefulSetRes schema.GroupVersionResource, client dynami
 
 		containers := []interface{}{
 			map[string]interface{}{
-				"name":  "book-server",
-				"image": "almasood/book_server:latest",
+				"name":            "book-server",
+				"image":           "almasood/book-server:latest",
+				"imagePullPolicy": "IfNotPresent",
 				"ports": []interface{}{
 					map[string]interface{}{
 						"name":          "http",

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: in-cluster
+  labels:
+    app: in-cluster
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: in-cluster
+  template:
+    metadata:
+      name: in-cluster
+      labels:
+        app: in-cluster
+    spec:
+      containers:
+        - name: in-cluster
+          image: in-cluster:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
